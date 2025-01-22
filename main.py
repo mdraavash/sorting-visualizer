@@ -1,0 +1,65 @@
+import pygame 
+from models import *
+from sort import *
+pygame.init()
+
+run = True
+clock = pygame.time.Clock()
+n=30
+min_val = 0
+max_val =100
+sorting = False
+ascending = True
+
+sorting_algorithm = bubble_sort
+sorting_algorithm_name = "bubble sort"
+sorting_algorithm_generator = None
+
+lst = generate_starting_list(n, min_val, max_val)
+draw_info = DrawInformation(800, 600, lst)
+
+while run:
+    clock.tick(60) #clock time 
+
+    if sorting:
+        try:
+            next(sorting_algorithm_generator)
+        except StopIteration:
+            sorting = False
+    else:
+        draw(draw_info, sorting_algorithm_name, ascending)
+
+    draw(draw_info, sorting_algorithm_name, ascending)
+
+    for event in pygame.event.get(): #gets lists of events from last loop and stores it in event
+        if event.type == pygame.QUIT:
+            run = False
+            
+        if event.type != pygame.KEYDOWN:
+            continue
+
+        if event.key == pygame.K_r:
+            lst = generate_starting_list(n, min_val, max_val)
+            draw_info.set_list(lst)
+            sorting = False
+
+        elif event.key == pygame.K_SPACE and sorting == False:
+            sorting = True
+            sorting_algorithm_generator = sorting_algorithm(draw_info , ascending)
+            
+        elif event.key == pygame.K_a and not sorting:
+            ascending = True
+            
+        elif event.key == pygame.K_d and not sorting:
+            ascending = False
+
+        elif event.key == pygame.K_i and not sorting:
+            sorting_algorithm = insertion_sort
+            sorting_algorithm_name = "Insertion sort"
+
+        elif event.key == pygame.K_b and not sorting:
+            sorting_algorithm = bubble_sort
+            sorting_algorithm_name = "Bubble sort"
+
+pygame.quit() 
+
