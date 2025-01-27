@@ -5,7 +5,7 @@ pygame.init()
 
 run = True
 clock = pygame.time.Clock()
-n=30
+n=10
 min_val = 0
 max_val =100
 sorting = False
@@ -18,12 +18,20 @@ sorting_algorithm_generator = None
 lst = generate_starting_list(n, min_val, max_val)
 draw_info = DrawInformation(800, 600, lst)
 
+clicked = False
+
 while run:
     clock.tick(60) #clock time 
 
-    if sorting:
-        try:
-            next(sorting_algorithm_generator)
+    if sorting:   #using the generator to sort the array
+        try: 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT and not clicked:  # Detect the Left Arrow Key
+                    clicked = True
+                    next(sorting_algorithm_generator)
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:  # Detect Left Arrow Key Release
+                    clicked = False
         except StopIteration:
             sorting = False
     else:
@@ -60,6 +68,10 @@ while run:
         elif event.key == pygame.K_b and not sorting:
             sorting_algorithm = bubble_sort
             sorting_algorithm_name = "Bubble sort"
+
+        elif event.key == pygame.K_s and not sorting:
+            sorting_algorithm = shell_sort
+            sorting_algorithm_name = "Shell sort"
 
 pygame.quit() 
 

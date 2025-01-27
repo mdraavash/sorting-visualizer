@@ -19,6 +19,7 @@ class DrawInformation:
 
     FONT = pygame.font.SysFont('comicsans', 20)
     LARGE_FONT = pygame.font.SysFont('comicsans', 25)
+    INNER_FONT = pygame.font.SysFont('comicsans', 15)
     SIDE_PAD = 100 #settin up side and top padding 
     TOP_PAD = 150
 
@@ -53,7 +54,7 @@ def draw(draw_info, algo_name, ascending):
     draw_info.window.blit(controls , (draw_info.width / 2 - controls.get_width() / 2 , 35))
 
     sorting = draw_info.FONT.render(
-        "I - Insertion Sort | B - Bubble Sort",
+        "I - Insertion Sort | B - Bubble Sort | S- Shell Short",
         1, draw_info.BLACK)
     draw_info.window.blit(sorting , (draw_info.width / 2 - sorting.get_width() / 2 , 65))
     
@@ -70,20 +71,26 @@ def draw_list(draw_info, color_positions={}, clear_bg =  False):
         pygame.draw.rect(draw_info.window, draw_info.BACKGROUND_COLOR, clear_rect)
     for i, val in enumerate(lst):
         x = draw_info.start_x + i * draw_info.block_width
-        y = draw_info.height - (val - draw_info.min_val) * draw_info.block_height
+        y = draw_info.height - (val - draw_info.min_val) * draw_info.block_height - 10
         
         color = draw_info.GRADIENTS[i % 3] 
 
         if i in color_positions:
             color = color_positions[i] 
-
+        
         pygame.draw.rect(draw_info.window, 
                          color, 
                          (x, y, draw_info.block_width, draw_info.height - y)
                         )
-    
+        
+        value = draw_info.INNER_FONT.render(
+        f"{val}",1, draw_info.BLACK)
+        draw_info.window.blit(value, (x+0.05*x, y - value.get_height() + 30))
     if clear_bg:
         pygame.display.update()
+
+def draw_colored_list(draw_info, color_position={},clear_bg= False):
+    pass
 
 def generate_starting_list(n, min_val, max_val): #no of list,maximim value, minimum value 
     
