@@ -41,6 +41,21 @@ class DrawInformation:
         self.block_height = int((self.height - self.TOP_PAD) / (self.max_val - self.min_val))  #gives height of block
         self.start_x = self.SIDE_PAD // 2 #starting of the block in x axis 
 
+def generate_gradient_colors(length, base_color=(0, 255, 0)):
+    """
+    Generate a gradient of green colors.
+    :param length: Number of colors to generate.
+    :param base_color: Base RGB color to create gradients from.
+    :return: List of gradient colors.
+    """
+    max_intensity = base_color[1]  # Green intensity
+    step = max_intensity // length  # Step to reduce intensity
+
+    gradient_colors = [
+        (0, max_intensity - i * step, 0) for i in range(length)
+    ]
+    return gradient_colors
+
 def draw(draw_info, algo_name, ascending):
     draw_info.window.fill(draw_info.BACKGROUND_COLOR)
 
@@ -90,6 +105,28 @@ def draw_list(draw_info, color_positions={}, clear_bg =  False):
         draw_info.window.blit(value, (text_x, text_y))
     if clear_bg:
         pygame.display.update()
+
+def draw_colored_list(draw_info, color, i=0, val=0):
+    # Calculate the position and size of the block
+    x = draw_info.start_x + i * draw_info.block_width
+    y = draw_info.height - (val - draw_info.min_val) * draw_info.block_height
+    
+    # Draw the block
+    pygame.draw.rect(
+        draw_info.window,
+        color,
+        (x, y, draw_info.block_width, draw_info.height - y)
+    )
+    
+    # Render the value inside or near the block
+    value = draw_info.INNER_FONT.render(f"{val}", 1, draw_info.BLACK)
+    text_x = x + (draw_info.block_width - value.get_width()) / 2  # Center the text horizontally in the block
+    text_y = y - value.get_height() + 30  # Position text slightly above the block
+    draw_info.window.blit(value, (text_x, text_y))
+    
+    # Update the display
+    pygame.display.update()
+
 
 def generate_starting_list(n, min_val, max_val): #no of list,maximim value, minimum value 
     

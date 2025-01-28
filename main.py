@@ -25,7 +25,7 @@ while run:
 
     if sorting:   #using the generator to sort the array
         try: 
-            # next(sorting_algorithm_generator)
+            #next(sorting_algorithm_generator)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT and not clicked:  # Detect the Left Arrow Key
                     clicked = True
