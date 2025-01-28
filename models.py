@@ -9,6 +9,7 @@ class DrawInformation:
     GREEN = 0, 255, 0
     RED = 255, 0, 0
     GREY = 128, 128, 128
+    BLUE = 0, 0, 255
     BACKGROUND_COLOR = WHITE 
 
     GRADIENTS = [
@@ -71,7 +72,7 @@ def draw_list(draw_info, color_positions={}, clear_bg =  False):
         pygame.draw.rect(draw_info.window, draw_info.BACKGROUND_COLOR, clear_rect)
     for i, val in enumerate(lst):
         x = draw_info.start_x + i * draw_info.block_width
-        y = draw_info.height - (val - draw_info.min_val) * draw_info.block_height - 10
+        y = draw_info.height - (val - draw_info.min_val) * draw_info.block_height 
         
         color = draw_info.GRADIENTS[i % 3] 
 
@@ -80,17 +81,15 @@ def draw_list(draw_info, color_positions={}, clear_bg =  False):
         
         pygame.draw.rect(draw_info.window, 
                          color, 
-                         (x, y, draw_info.block_width, draw_info.height - y)
-                        )
-        
+                         (x, y-2, draw_info.block_width, draw_info.height - y)
+                        )      
         value = draw_info.INNER_FONT.render(
         f"{val}",1, draw_info.BLACK)
-        draw_info.window.blit(value, (x+0.05*x, y - value.get_height() + 30))
+        text_x = x + (draw_info.block_width - value.get_width()) / 2  # Center the text horizontally in the block
+        text_y = y - value.get_height() + 30  # Position text slightly above the block
+        draw_info.window.blit(value, (text_x, text_y))
     if clear_bg:
         pygame.display.update()
-
-def draw_colored_list(draw_info, color_position={},clear_bg= False):
-    pass
 
 def generate_starting_list(n, min_val, max_val): #no of list,maximim value, minimum value 
     
@@ -98,6 +97,7 @@ def generate_starting_list(n, min_val, max_val): #no of list,maximim value, mini
 
     for _ in range(n):
         val = random.randint(min_val, max_val)
+        val += 5
         lst.append(val)
 
     return lst

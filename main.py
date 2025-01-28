@@ -7,7 +7,7 @@ run = True
 clock = pygame.time.Clock()
 n=10
 min_val = 0
-max_val =100
+max_val = 95
 sorting = False
 ascending = True
 
@@ -25,6 +25,7 @@ while run:
 
     if sorting:   #using the generator to sort the array
         try: 
+            # next(sorting_algorithm_generator)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT and not clicked:  # Detect the Left Arrow Key
                     clicked = True
